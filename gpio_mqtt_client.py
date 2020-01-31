@@ -45,16 +45,18 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     print(msg.topic + " " + str(msg.payload))
     print("output port = {}, state = {}".format(gpiomap[msg.topic], msgmap[msg.payload]))
-
     GPIO.output(gpiomap[msg.topic], msgmap[msg.payload])
 
 
 if __name__ == "__main__":
+    print("mqtt_client started")
     init_gpios()
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
 
-    client.connect("192.168.1.22", 1883, 60)
+    client.connect("localhost", 1883, 60)
 
     client.loop_forever()
+    print("mqtt_client stopped")
+    exit(0)
